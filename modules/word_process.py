@@ -6,6 +6,7 @@ lemmatizing and tf-idf vectorizing.
 from nltk import word_tokenize
 from helpers import *
 import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 class word_processor(object):
     '''
@@ -20,26 +21,39 @@ class word_processor(object):
         '''
         self.data = data
         self.words = data[:,str_ind]
-        self.fin_data = None
+
+
 
     def tokenize(self):
         '''
         Tokeninze the words
         :return: numpy array
         '''
-        self.bag = np.array([word_tokenize(word) for word in self.words])
+        return np.array([word_tokenize(word) for word in self.words])
 
-    def stemming(self,stem_func):
+    def lower_case(self):
         '''
-        stemmer
-        :param stem_func: string. "snowball" or "porter"
+        lower case bag of words
         :return: numpy array
         '''
-        self.stemed_bag = bag_stemer(stem_func,self.bag)
+        lis = []
+        bag = self.tokenize()
+        for b in bag:
+            lis.append([x.lower() for x in b])
+        return np.array(lis)
 
-    def lemmatize(self):
+    def process(self, stem_func):
         '''
-        lemmatize strings
-        :return: numpy array
+        switch all to lower cases, stemming, then lemmatizing
+        :param kwargs:
+        :return: numpy array, processed training set.
         '''
+        lower = self.lower_case()
+        stemmed_bag = bag_stemer(stem_func,lower)
+        lamma_bag =  bag_lemma(stemmed_bag)
+        return join_words(lamma_bag)
+
+
+
+
 

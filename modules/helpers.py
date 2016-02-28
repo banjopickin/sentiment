@@ -36,3 +36,13 @@ def bag_lemma(bag):
         lemma_lis.append([wnl.lemmatize(x) for x in b])
     return np.array(lemma_lis)
 
+def join_words(arr):
+    '''
+    join tokenized words back to strings
+    :param arr: numpy array
+    :return: numpy array
+    '''
+    lis = []
+    for a in arr:
+        lis.append(" ".join(a))
+    return np.array(lis)
